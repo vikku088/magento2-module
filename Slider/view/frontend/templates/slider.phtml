@@ -1,0 +1,155 @@
+<?php
+	$rowData = $block->getSlidesModel();
+	
+	$sliderType = $block->getSliderType();
+	
+?>
+
+<?php
+if(!empty($rowData))
+{
+	$sliderClass = $block->getSliderPositionClass();
+	?>
+	<style type="text/css">.authentication-wrapper{ margin-top: 0px; }</style>
+	<?php
+	?>
+	<div class="excellence-slider hidden <?php echo $sliderClass; ?>">
+	<?php
+	switch ($sliderType) {
+        case 'bxslider':
+        	?>
+        		<script type="text/javascript">
+					requirejs(['jquery','bxslider'],function($,bx){
+						$('.bxslider').bxSlider({
+							captions: true,
+            				auto: true,
+            				adaptiveHeight: true,
+            				pagerCustom: '#bx-pager'
+						});
+				    });
+				</script>
+	            <div>
+					<ul class="bxslider">
+						<?php foreach ($rowData as $item) : ?>
+							<?php $sliderId = $item['slider_name'];?>
+							<?php $stretchImageValue = $block->getStretchImageInfo($sliderId);?>
+							<li><a href="<?php if(empty($item['content'])){ echo "javascript:void(0)"; } else{ echo $item['content']; } ?>"><?php if($stretchImageValue == 1): ?><img style="width: 100%" src="<?php echo $item['filename']; ?>" alt="<?php echo $item['title']; ?>" title="<?php echo $item['title']; ?>" /><?php else:?><img src="<?php echo $item['filename']; ?>" alt="<?php echo $item['title']; ?>" title="<?php echo $item['title']; ?>" class= "slider-image" /><?php endif;?> </a></li>
+						<?php endforeach; ?>
+					</ul>
+				</div>
+            <?php
+            break;
+
+        case 'flexslider':
+            ?>
+            	<script type="text/javascript">
+					requirejs(['jquery','flexslider'],function($,flex){
+						$('.flexslider').flexslider();
+				    });
+				</script>
+	            <div class="flexslider">
+					<ul class="slides">
+						<?php foreach ($rowData as $item) : ?>
+							<?php $sliderId = $item['slider_name'];?>
+							<?php $stretchImageValue = $block->getStretchImageInfo($sliderId);?>
+							<li>
+								<a href="<?php if(empty($item['content'])){ echo "javascript:void(0)"; } else{ echo $item['content']; } ?>"><?php if($stretchImageValue == 1): ?><img style="width: 100%" src="<?php echo $item['filename']; ?>" alt="<?php echo $item['title']; ?>" title="<?php echo $item['title']; ?>" /><?php else:?><img src="<?php echo $item['filename']; ?>" alt="<?php echo $item['title']; ?>" title="<?php echo $item['title']; ?>" class= "slider-image" /><?php endif;?></a>
+								<?php
+								if(!empty($item['title'])){
+									?>
+									<p class="image-caption"><?php echo $item['title']; ?></p>
+									<?php
+								}
+								?>
+								
+							</li>
+						<?php endforeach; ?>
+					</ul>
+				</div>
+            <?php
+            break;
+
+        case 'owlcarousel':
+            ?>
+            	<script type="text/javascript">
+					requirejs(['jquery','owlcarousel'],function($,owl){
+						$('.owl-carousel').owlCarousel({
+							items: 1,
+					        autoplay: true,
+					        dots: false,
+					        nav: true,
+					        navRewind: true,
+					        loop: true
+						});
+				    });
+				</script>
+	            <div class="owl-carousel">
+						<?php foreach ($rowData as $item) : ?>
+							<?php $sliderId = $item['slider_name'];?>
+							<?php $stretchImageValue = $block->getStretchImageInfo($sliderId);?>
+							<div><a href="<?php if(empty($item['content'])){ echo "javascript:void(0)"; } else{ echo $item['content']; } ?>"><?php if($stretchImageValue == 1): ?><img style="width: 100%" src="<?php echo $item['filename']; ?>" alt="<?php echo $item['title']; ?>" title="<?php echo $item['title']; ?>" /><?php else:?><img src="<?php echo $item['filename']; ?>" alt="<?php echo $item['title']; ?>" title="<?php echo $item['title']; ?>" class= "slider-image" /><?php endif;?></a>
+							<?php
+							if(!empty($item['title'])){
+								?>
+								<p class="image-caption"><?php echo $item['title']; ?></p>
+								<?php
+							}
+							?>
+							</div>
+						<?php endforeach; ?>
+				</div>
+            <?php
+            break;
+
+        case 'unslider':
+            ?>
+            	<script type="text/javascript">
+					requirejs(['jquery','unslider'],function($,unslider){
+						$('.automatic-slider').unslider({
+							autoplay: true,
+							arrows: false 
+						});
+
+				    });
+				</script>
+	            <div class="automatic-slider">
+					<ul>
+						<?php foreach ($rowData as $item) : ?>
+							<?php $sliderId = $item['slider_name'];?>
+							<?php $stretchImageValue = $block->getStretchImageInfo($sliderId);?>
+							<li><a href="<?php if(empty($item['content'])){ echo "javascript:void(0)"; } else{ echo $item['content']; } ?>"><?php if($stretchImageValue == 1): ?><img style="width: 100%" src="<?php echo $item['filename']; ?>" alt="<?php echo $item['title']; ?>" title="<?php echo $item['title']; ?>" /><?php else:?><img  src="<?php echo $item['filename']; ?>" alt="<?php echo $item['title']; ?>" title="<?php echo $item['title']; ?>" /><?php endif;?></a></li>
+						<?php endforeach; ?>
+					</ul>
+				</div>
+            <?php
+            break;
+
+        default:
+    }
+    ?>
+    </div>
+    <?php
+}
+?>
+<script type="text/javascript">
+	requirejs(['jquery'],function($){
+		$('.excellence-slider.top-center').removeClass('hidden');
+		$('.excellence-slider.bottom-center').removeClass('hidden');
+
+		if($('body.page-layout-2columns-right').length == 1){
+			$('.excellence-slider.top-right').removeClass('hidden');
+			$('.excellence-slider.bottom-right').removeClass('hidden');
+		}
+		if($('body.page-layout-2columns-left').length == 1){
+			$('.excellence-slider.top-left').removeClass('hidden');
+			$('.excellence-slider.bottom-left').removeClass('hidden');
+		}
+		if($('body.page-layout-3columns').length == 1){
+			$('.excellence-slider.top-right').removeClass('hidden');
+			$('.excellence-slider.bottom-right').removeClass('hidden');
+			$('.excellence-slider.top-left').removeClass('hidden');
+			$('.excellence-slider.bottom-left').removeClass('hidden');
+		}
+    });
+</script>
+  
